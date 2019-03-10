@@ -3,90 +3,90 @@ import simpledb
 
 class SimpleDBTest(unittest.TestCase):
 
-    def testUnset(self):
+    def test_unset(self):
         simpleDB = simpledb.SimpleDB()
-        simpleDB.Set("test", 10)
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 10, "expected value 10")
-        simpleDB.Unset("test")
-        self.assertRaises(KeyError,simpleDB.Get,"test")
+        simpleDB.set("test", 10)
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 10)
+        simpleDB.unset("test")
+        self.assertRaises(KeyError,simpleDB.get,"test")
 
     
     def testRollback(self):
         simpleDB = simpledb.SimpleDB()
         
-        simpleDB.Begin()
-        simpleDB.Set("test", 10)
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 10, "expected value 10")
+        simpleDB.begin()
+        simpleDB.set("test", 10)
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 10)
         
-        simpleDB.Begin()
-        simpleDB.Set("test",20)
-        val = simpleDB.Get("test")
-        self.assertEqual(val, 20, "expected value 20")
+        simpleDB.begin()
+        simpleDB.set("test",20)
+        val = simpleDB.get("test")
+        self.assertEqual(val, 20)
         
         # TODO should we create a custom error 
-        simpleDB.Rollback()
+        simpleDB.rollback()
         
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 10, "expected value 10")
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 10)
         
         simpleDB.Rollback()
          
-        self.assertRaises(KeyError,simpleDB.Get,"test")
+        self.assertRaises(KeyError,simpleDB.get,"test")
 
 
     def testCommit(self): 
         simpleDB = simpledb.SimpleDB()
         
-        simpleDB.Begin()
-        simpleDB.Set("test", 30)
+        simpleDB.begin()
+        simpleDB.set("test", 30)
         
-        simpleDB.Begin()
-        simpleDB.Set("test", 40)
+        simpleDB.begin()
+        simpleDB.set("test", 40)
         
-        simpleDB.Commit()
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 40, "expected value 40")
+        simpleDB.commit()
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 40)
         
-        simpleDB.Rollback()
+        simpleDB.rollback()
 
     def testTransactionComplex(self):
         simpleDB = simpledb.SimpleDB()
-        simpleDB.Set("test", 50)
+        simpleDB.set("test", 50)
                  
-        simpleDB.Begin()
+        simpleDB.begin()
         
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 50, "expected value 50")
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 50)
 
-        simpleDB.Set("test", 60)
-        simpleDB.Begin()
-        simpleDB.Unset("test")
+        simpleDB.set("test", 60)
+        simpleDB.begin()
+        simpleDB.unset("test")
 
-        self.assertRaises(KeyError,simpleDB.Get,"test")
+        self.assertRaises(KeyError,simpleDB.get,"test")
         
-        simpleDB.Rollback()
+        simpleDB.rollback()
         
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 60, "expected value 60")
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 60)
 
-        simpleDB.Commit()
+        simpleDB.commit()
         
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 60, "expected value 60")
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 60)
 
-        simpleDB.Begin()
-        simpleDB.Unset("test")
+        simpleDB.begin()
+        simpleDB.unset("test")
 
-        self.assertRaises(KeyError,simpleDB.Get,"test")
-        simpleDB.Rollback()
+        self.assertRaises(KeyError,simpleDB.get,"test")
+        simpleDB.rollback()
         
         
-        val = simpleDB.Get("test") 
-        self.assertEqual(val, 60, "expected value 60")
+        val = simpleDB.get("test") 
+        self.assertEqual(val, 60)
          
-        self.assertRaises(Exception, simpleDB.Commit)            
+        self.assertRaises(Exception, simpleDB.commit)            
 
 
 if __name__ == '__main__':
