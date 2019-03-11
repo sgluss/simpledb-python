@@ -4,89 +4,88 @@ import simpledb
 class SimpleDBTest(unittest.TestCase):
 
     def test_unset(self):
-        simpleDB = simpledb.SimpleDB()
-        simpleDB.set("test", 10)
-        val = simpleDB.get("test") 
+        db = simpledb.SimpleDB()
+        db.set("test", 10)
+        val = db.get("test")
         self.assertEqual(val, 10)
-        simpleDB.unset("test")
-        self.assertRaises(KeyError,simpleDB.get,"test")
+        db.unset("test")
+        self.assertRaises(KeyError,db.get,"test")
 
-    
+
     def testRollback(self):
-        simpleDB = simpledb.SimpleDB()
-        
-        simpleDB.begin()
-        simpleDB.set("test", 10)
-        val = simpleDB.get("test") 
+        db = simpledb.SimpleDB()
+
+        db.begin()
+        db.set("test", 10)
+        val = db.get("test")
         self.assertEqual(val, 10)
-        
-        simpleDB.begin()
-        simpleDB.set("test",20)
-        val = simpleDB.get("test")
+
+        db.begin()
+        db.set("test",20)
+        val = db.get("test")
         self.assertEqual(val, 20)
-        
-        # TODO should we create a custom error 
-        simpleDB.rollback()
-        
-        val = simpleDB.get("test") 
+
+        db.rollback()
+
+        val = db.get("test")
         self.assertEqual(val, 10)
-        
-        simpleDB.Rollback()
-         
-        self.assertRaises(KeyError,simpleDB.get,"test")
+
+        db.Rollback()
+
+        self.assertRaises(KeyError,db.get,"test")
 
 
-    def testCommit(self): 
-        simpleDB = simpledb.SimpleDB()
-        
-        simpleDB.begin()
-        simpleDB.set("test", 30)
-        
-        simpleDB.begin()
-        simpleDB.set("test", 40)
-        
-        simpleDB.commit()
-        val = simpleDB.get("test") 
+    def testCommit(self):
+        db = simpledb.SimpleDB()
+
+        db.begin()
+        db.set("test", 30)
+
+        db.begin()
+        db.set("test", 40)
+
+        db.commit()
+        val = db.get("test")
         self.assertEqual(val, 40)
-        
-        simpleDB.rollback()
+
+        db.rollback()
 
     def testTransactionComplex(self):
-        simpleDB = simpledb.SimpleDB()
-        simpleDB.set("test", 50)
-                 
-        simpleDB.begin()
-        
-        val = simpleDB.get("test") 
+        db = simpledb.SimpleDB()
+        db.set("test", 50)
+
+        db.begin()
+
+        val = db.get("test")
         self.assertEqual(val, 50)
 
-        simpleDB.set("test", 60)
-        simpleDB.begin()
-        simpleDB.unset("test")
+        db.set("test", 60)
+        db.begin()
+        db.unset("test")
 
-        self.assertRaises(KeyError,simpleDB.get,"test")
-        
-        simpleDB.rollback()
-        
-        val = simpleDB.get("test") 
+        self.assertRaises(KeyError,db.get,"test")
+
+        db.rollback()
+
+        val = db.get("test")
         self.assertEqual(val, 60)
 
-        simpleDB.commit()
-        
-        val = simpleDB.get("test") 
+        db.commit()
+
+        val = db.get("test")
         self.assertEqual(val, 60)
 
-        simpleDB.begin()
-        simpleDB.unset("test")
+        db.begin()
+        db.unset("test")
 
-        self.assertRaises(KeyError,simpleDB.get,"test")
-        simpleDB.rollback()
-        
-        
-        val = simpleDB.get("test") 
+        self.assertRaises(KeyError,db.get,"test")
+        db.rollback()
+
+
+        val = db.get("test")
         self.assertEqual(val, 60)
-         
-        self.assertRaises(Exception, simpleDB.commit)            
+
+        self.assertRaises(Exception, db.commit)
 
 
 if __name__ == '__main__':

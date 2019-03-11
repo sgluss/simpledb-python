@@ -4,8 +4,6 @@ class SimpleDB:
     """set sets the value associated with the key"""
     pass
   
-  # get returns the value associated with the key
-  # this should throw a KeyError if the key doesn't exist
   def get(self, key):
     """get returns the value associated with the key
        get should raise a KeyError if the key doesn't exist
