@@ -1,16 +1,15 @@
 import unittest
 import simpledb
 
-class SimpleDBTest(unittest.TestCase):
 
+class SimpleDBTest(unittest.TestCase):
     def test_unset(self):
         db = simpledb.SimpleDB()
         db.set("test", 10)
         val = db.get("test")
         self.assertEqual(val, 10)
         db.unset("test")
-        self.assertRaises(KeyError,db.get,"test")
-
+        self.assertRaises(KeyError, db.get, "test")
 
     def testRollback(self):
         db = simpledb.SimpleDB()
@@ -21,7 +20,7 @@ class SimpleDBTest(unittest.TestCase):
         self.assertEqual(val, 10)
 
         db.begin()
-        db.set("test",20)
+        db.set("test", 20)
         val = db.get("test")
         self.assertEqual(val, 20)
 
@@ -32,8 +31,7 @@ class SimpleDBTest(unittest.TestCase):
 
         db.Rollback()
 
-        self.assertRaises(KeyError,db.get,"test")
-
+        self.assertRaises(KeyError, db.get, "test")
 
     def testCommit(self):
         db = simpledb.SimpleDB()
@@ -63,7 +61,7 @@ class SimpleDBTest(unittest.TestCase):
         db.begin()
         db.unset("test")
 
-        self.assertRaises(KeyError,db.get,"test")
+        self.assertRaises(KeyError, db.get, "test")
 
         db.rollback()
 
@@ -78,9 +76,8 @@ class SimpleDBTest(unittest.TestCase):
         db.begin()
         db.unset("test")
 
-        self.assertRaises(KeyError,db.get,"test")
+        self.assertRaises(KeyError, db.get, "test")
         db.rollback()
-
 
         val = db.get("test")
         self.assertEqual(val, 60)
@@ -88,5 +85,5 @@ class SimpleDBTest(unittest.TestCase):
         self.assertRaises(Exception, db.commit)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
