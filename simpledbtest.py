@@ -29,7 +29,7 @@ class SimpleDBTest(unittest.TestCase):
         val = db.get("test")
         self.assertEqual(val, 10)
 
-        db.Rollback()
+        db.rollback()
 
         self.assertRaises(KeyError, db.get, "test")
 
@@ -46,7 +46,7 @@ class SimpleDBTest(unittest.TestCase):
         val = db.get("test")
         self.assertEqual(val, 40)
 
-        db.rollback()
+        self.assertRaises(Exception, db.rollback)
 
     def testTransactionComplex(self):
         db = simpledb.SimpleDB()
