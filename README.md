@@ -10,19 +10,25 @@ library.
 * You have 45 minutes to work on the implementation. Get as far as you can and
   be prepared to discuss your approach and how you would complete the exercise
   afterward.
-* A suggested approach is to copy and paste a single unit test function at a
-  time and get it to pass.
+* Given the time limitation focus on your implementation and mention
+  performance or style concerns to the interviewer for later discussion.
+
+### Suggested Approach
+
+* Read through this README to understand the problem.
+* Read through `simpledbtest.py` and run tests to see where they fail.
+* Try to get 1 test passing at a time. From top to bottom in `simpledbtest.py`.
  
-## Data Commands
+## Database Operations
 
-The database accepts the following commands to operate on keys:
+The scope of the exercise is to implement the internal functionality covered by
+the test suite, **not** parsing input and producing output.
 
-* `SET name value` – Set the variable `name` to the value `value`. For
-  simplicity `value` may be an integer.
-* `GET name` – Print out the value of the variable `name`, or `NULL` if that
-  variable is not set.
-* `UNSET name` – Unset the variable `name`, making it just like that variable
-  was never set.
+The database supports the following operations:
+
+* `SET name value` – Set the key `name` to the integer value `value`.
+* `GET name` – Retrieve the value of the key `name`.
+* `UNSET name` – Unset the key `name`, making it as if the key was never set.
 
 ```
 INPUT	            OUTPUT
@@ -42,18 +48,19 @@ GET b               30
 
 ## Transaction Commands
 
-In addition to the above data commands, your program should also support
-database transactions by also implementing these commands:
+In addition to the above data operations, your program should also support
+transactions by implementing these operations:
 
-* `BEGIN` – Open a new transaction block. **Transactions can be nested;** a
-  `BEGIN` can be issued inside of an existing block.
-* `ROLLBACK` – Undo commands issued in the current transaction, and closes it
+* `BEGIN` – Start a new transaction. **Transactions can be nested;** a
+  `BEGIN` can be issued inside of an existing transaction.
+* `ROLLBACK` – Undo operations issued in the current transaction and closes it.
   Returns an error if no transaction is in progress.
-* `COMMIT` – Close **all** open transactions, permanently applying the changes
+* `COMMIT` – Close **all** open transactions and permanently apply the changes
   made in them. Returns an error if no transaction is in progress.
 
-Any data command that is run outside of a transaction should commit
-immediately. Here are some example command sequences:
+Any operation run outside of a transaction should apply immediately.
+
+Here are some example operations:
 
 ```
 INPUT	          OUTPUT
