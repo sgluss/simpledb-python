@@ -46,6 +46,7 @@ GET a               5
 SET b 10
 SET b 30
 GET b               30
+GET a               5
 ```
 
 ## Transaction Commands
