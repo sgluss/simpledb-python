@@ -12,6 +12,20 @@ class SimpleDBTest(unittest.TestCase):
         db.unset("a")
         self.assertRaises(KeyError, db.get, "a")
 
+    def test_multiple_keys(self):
+        db = simpledb.SimpleDB()
+
+        db.set("a", 5)
+        self.assertValue(db, "a", 5)
+
+        db.set("b", 10)
+        self.assertValue(db, "b", 10)
+
+        db.set("b", 30)
+        self.assertValue(db, "b", 30)
+
+        self.assertValue(db, "a", 5)
+
     def testRollback(self):
         db = simpledb.SimpleDB()
 

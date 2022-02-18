@@ -18,7 +18,7 @@ library.
 * Read through this README to understand the problem.
 * Read through `simpledbtest.py` and run tests to see where they fail.
 * Try to get 1 test passing at a time. From top to bottom in `simpledbtest.py`.
- 
+
 ## Database Operations
 
 The scope of the exercise is to implement the internal functionality covered by
@@ -41,9 +41,12 @@ GET ex              NULL
 
 INPUT	            OUTPUT
 --------------------------
+SET a 5
+GET a               5
 SET b 10
 SET b 30
 GET b               30
+GET a               5
 ```
 
 ## Transaction Commands
@@ -75,7 +78,7 @@ ROLLBACK
 GET a             10
 ROLLBACK
 GET a             NULL
-END
+
 
 INPUT	          OUTPUT
 ------------------------
@@ -86,7 +89,6 @@ SET a 40
 COMMIT
 GET a             40
 ROLLBACK          NO TRANSACTION
-END
 
 
 INPUT	          OUTPUT
@@ -102,5 +104,4 @@ ROLLBACK
 GET a             60
 COMMIT
 GET a             60
-END
 ```
