@@ -64,7 +64,7 @@ transactions by implementing these operations:
 Any operation run outside of a transaction should apply immediately.
 
 Here are some example operations:
-
+transaction = [(exec:set [a 10], rollback:set [a #]) (get [a]) [(exec: set a 20, rollback: set a 10) (get a)]]
 ```
 INPUT	          OUTPUT
 ------------------------
